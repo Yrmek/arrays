@@ -4,26 +4,28 @@
 числа в диапазоне от а до b. */
 
 #include <iostream>// cin cout
+#include <iomanip>
+
 using namespace std;
 
 int main() 
 {
     setlocale (LC_ALL,"");
-    const short int b = 100; 
-    int a = 9;
+    const short int b = 1000; 
+    int a = 17;
 
-    bool isPrime[b + 1];
-    for (int i = a ; i <= b; i++) 
+    bool isPrime[b * 10 + 1];
+    for (int i = a ; i <= b * 10; i++) 
     {
         isPrime[i] = true; // изначально присваивается всем числам значение true так как после лишние будут вычеркиваться
     }
     isPrime[0] = isPrime[1] = false; // 1 и 0 не простые числа
 
-    for ( int i = 2 ; i * i <= b; i++) 
+    for ( int i = 2 ; i * i <= b * 10; i++) 
     {
         if (isPrime[i]) 
         {
-            for (int j = i * i; j <= b; j += i) 
+            for (int j = i * i; j <= b * 10 ; j += i) 
             {
                 isPrime[j] = false;
             }
@@ -32,7 +34,6 @@ int main()
     cout << "Простые числа от a до " << b << ":\n";
 
     int RevPrime[b + 1]{};
-
     for (int i = a ; i <= b; i++) 
     {
         if (isPrime[i])
@@ -52,28 +53,24 @@ int main()
         }
         RevPrime[i] = revnum;
     }
-
     cout <<" "<< endl;
     cout << "Сверхпростые числа:" << endl;
 
-    for (int i = a; i <= b; i++)
+    for (int i = 0; i < b; i++)
     {
-        int k = 2;
         int SuperPrimeNum = 0;
-
-        while (k < RevPrime[i])
+        int TempSPN = 0;
+        int revnum = 0;
+        if (isPrime[RevPrime[i]])
         {
-            if (RevPrime[i] % k != 0) SuperPrimeNum = RevPrime[i];
-            else
+            TempSPN = RevPrime[i];
+            while (RevPrime[i] > 0)   // цикл который переворачивает числа
             {
-                continue;
-                k++;
+                revnum = revnum * 10 + RevPrime[i] % 10;
+                RevPrime[i] /= 10;
             }
-            k++;
+            cout << revnum<< "|" << TempSPN << endl;
         }
-
-        if (SuperPrimeNum != 0) cout << SuperPrimeNum << " ";
     }
-
     return 0;
 }
